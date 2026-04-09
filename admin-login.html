@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livestock CRM Admin Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="bg-circles">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2" style="right: 10%"></div>
+        <div class="circle circle-3" style="left: 10%"></div>
+    </div>
+
+    <!-- Wide Admin Container -->
+    <div class="app-container admin-container" style="display: flex; align-items: center; justify-content: center; min-height: 100vh;">
+        <div class="modal-content" style="max-height: none; width: 100%; max-width: 450px; background: var(--surface-color); padding: 40px; border-radius: 20px; box-shadow: 0 4px 30px rgba(0,0,0,0.1);">
+            
+            <a href="index.html" style="color: var(--text-muted); text-decoration: none; font-size: 14px; position: absolute; top: 20px; left: 20px;">
+                <i class="fas fa-arrow-left"></i> Back to App
+            </a>
+            
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div style="width: 60px; height: 60px; background: rgba(183, 25, 57, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
+                    <i class="fas fa-shield-alt fa-2x" style="color: var(--primary-color);"></i>
+                </div>
+                <h1 style="color: var(--primary-color); font-size: 28px; font-weight: 800; line-height: 1.1;">Admin Portal</h1>
+                <p style="color: var(--text-muted); margin-top: 10px; font-size: 15px;">Restricted Access Only</p>
+            </div>
+            
+            <form id="admin-auth-form">
+                <div class="input-group">
+                    <label>Admin Email</label>
+                    <input type="email" id="admin-email" required placeholder="you@domain.com">
+                </div>
+                <div class="input-group" style="margin-bottom: 25px;">
+                    <label>Password</label>
+                    <input type="password" id="admin-password" required placeholder="••••••••">
+                </div>
+                
+                <div id="admin-auth-error" style="background: rgba(255,0,0,0.1); color: #d32f2f; font-size: 14px; padding: 10px; border-radius: 8px; margin-bottom: 20px; display: none; text-align: center;"></div>
+                
+                <button type="submit" class="btn-primary" id="btn-admin-login">AUTHORIZE</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="admin-login.js"></script>
+</body>
+</html>

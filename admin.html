@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livestock CRM - Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="bg-circles">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2" style="right: 10%"></div>
+        <div class="circle circle-3" style="left: 10%"></div>
+    </div>
+
+    <!-- Wide Admin Dashboard Container -->
+    <div class="app-container admin-container">
+        <header class="app-header">
+            <div class="lang-selector" style="position: absolute; top: 20px; right: 20px; z-index: 100; display: flex; gap: 10px;">
+                <div class="btn-lang active" data-lang="en">EN</div>
+                <div class="btn-lang" data-lang="es">ES</div>
+            </div>
+            <div class="header-content">
+                <h1 data-i18n="admin_dashboard" style="margin-left: 60px;">Admin Dashboard</h1>
+                <p data-i18n="admin_desc" style="margin-left: 60px;">System & Data Management</p>
+                <div id="admin-user-info" style="font-size: 13px; color: var(--primary-color); background: rgba(255,255,255,0.8); padding: 4px 10px; border-radius: 12px; display: inline-block; margin-top: 10px; margin-left: 60px;">
+                    Verifying Authentication...
+                </div>
+                <!-- Back to Main Button -->
+                <a href="index.html" class="header-btn" style="top: 20px; left: 20px; right: auto; padding: 6px 12px;"><i class="fas fa-arrow-left"></i> <span data-i18n="home">Home</span></a>
+            </div>
+        </header>
+
+        <main class="app-content">
+            <!-- Tabs -->
+            <div class="tabs-container">
+                <button class="tab-btn active" id="tab-animals" onclick="switchTab('animals')" data-i18n="animals_data">Animals Data</button>
+                <button class="tab-btn" id="tab-users" onclick="switchTab('users')" data-i18n="system_users">System Users</button>
+            </div>
+
+            <!-- Animals Tab Content -->
+            <div id="content-animals" class="tab-content">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+                    <h2 style="font-size: 20px; color: var(--text-main);" data-i18n="all_animals">All Animals Database</h2>
+                    <button class="btn-primary" style="width: auto; padding: 10px 20px; margin: 0;" onclick="openAdminAddAnimal()">
+                        <i class="fas fa-plus"></i> <span data-i18n="add_animal">Add Animal</span>
+                    </button>
+                </div>
+                
+                <div class="table-container full-data-table">
+                    <table id="admin-animal-table">
+                        <thead>
+                            <tr>
+                                <th>ID Tag</th>
+                                <th>Name</th>
+                                <th>Race</th>
+                                <th>Gender</th>
+                                <th>Mother</th>
+                                <th>Father</th>
+                                <th data-i18n="created_by"><i class="fas fa-user-edit"></i> Created By</th>
+                                <th style="min-width: 120px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-animal-list">
+                            <!-- Populated dynamically from Supabase -->
+                        </tbody>
+                    </table>
+                    <div id="admin-empty-animals" class="empty-state hidden">
+                        <p>No animal data found in the system.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Tab Content -->
+            <div id="content-users" class="tab-content hidden">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+                    <h2 style="font-size: 20px; color: var(--text-main);" data-i18n="registered_users">Registered Users Directory</h2>
+                    <button class="btn-primary" style="width: auto; padding: 10px 20px; margin: 0;" onclick="openAdminAddUser()">
+                        <i class="fas fa-user-plus"></i> <span data-i18n="create_user">Create User Account</span>
+                    </button>
+                </div>
+
+                <div class="table-container full-data-table">
+                    <table id="admin-user-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Email/Login</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-user-list">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                    <div id="admin-empty-users" class="empty-state hidden">
+                        <p>No user directory data found.</p>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Generic Admin Modal for Overlays -->
+    <div class="modal-overlay hidden" id="admin-modal" style="z-index: 500;">
+        <div class="modal-content" style="max-height: 95vh; transform: translateY(0);">
+            <button class="close-btn" onclick="closeAdminModal()"><i class="fas fa-times"></i></button>
+            <h2 class="modal-title" id="admin-modal-title">Modal Title</h2>
+            <div id="admin-modal-body">
+                <!-- Form inserted here by JS -->
+            </div>
+            <div id="admin-modal-loading" class="hidden" style="text-align: center; color: var(--primary-color); margin-top: 15px;">
+                <i class="fas fa-spinner fa-spin fa-2x"></i>
+                <p style="margin-top: 10px;">Processing with Supabase...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
